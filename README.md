@@ -28,7 +28,7 @@ niigrid = NiftiImageGrid([TEMPLATES['ch2'], TEMPLATES['T1']])
 im = niigrid.get_image()
 im.show()
 ```
-![niftigrid](https://github.com/user-attachments/assets/715aaf36-88ed-40b3-8a77-fb92579a9ba7)
+![niftigrid](https://github.com/user-attachments/assets/99e0f520-a1b0-4cbf-9b34-51a27abb84cd)
 
 Behind the scenes, `niftiview` uses **three main classes** that build on each other
 - `NiftiCore`: Puts image slices of the 3D image in a 2D `numpy.ndarray`...
