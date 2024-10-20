@@ -36,9 +36,9 @@ Behind the scenes, `niftiview` uses **three main classes** that build on each ot
 - `NiftiImageGrid`: ...puts the images in a grid
 
 To **fully understand** how to use `niftiview`, study the **example notebooks** 🧑‍🏫
-- `examples/0_core.ipynb` explaining `NiftiCore`
-- `examples/1_image.ipynb` explaining `NiftiImage`
-- `examples/2_grid.ipynb` explaining `NiftiImageGrid`
+- [`examples/0_core.ipynb`](https://github.com/codingfisch/niftiview/blob/main/examples/0_core.ipynb) explaining `NiftiCore`
+- [`examples/1_image.ipynb`](https://github.com/codingfisch/niftiview/blob/main/examples/1_image.ipynb)  explaining `NiftiImage`
+- [`examples/2_grid.ipynb`](https://github.com/codingfisch/niftiview/blob/main/examples/2_grid.ipynb)  explaining `NiftiImageGrid`
 
 ## `niftiview-cli` 🖥️
 `pip install niftiview` also installs the **command line utility** that given filepath(s) or a filepattern...
