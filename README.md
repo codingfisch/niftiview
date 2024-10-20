@@ -16,6 +16,8 @@ nii = NiftiImage(TEMPLATES['ch2'])
 im = nii.get_image()
 im.show()
 ```
+![niftiimage](https://github.com/user-attachments/assets/e31bff70-36b9-4011-a4fc-5512e739e644)
+
 `NiftiImageGrid` can display **multiple images** in a nice **grid layout**
 ```python
 from niftiview import TEMPLATES, NiftiImageGrid
@@ -26,6 +28,8 @@ niigrid = NiftiImageGrid([TEMPLATES['ch2'], TEMPLATES['T1']])
 im = niigrid.get_image()
 im.show()
 ```
+![niftigrid](https://github.com/user-attachments/assets/715aaf36-88ed-40b3-8a77-fb92579a9ba7)
+
 Behind the scenes, `niftiview` uses **three main classes** that build on each other
 - `NiftiCore`: Puts image slices of the 3D image in a 2D `numpy.ndarray`...
 - `NiftiImage`: ...applies a colormap to the array, converts it to a `PIL.Image` and adds overlays...
