@@ -1,4 +1,4 @@
-![niftiview_logo_transparent_small](https://github.com/user-attachments/assets/a03ab906-59cb-4ad6-b526-9774b36bf8c9)
+![niftiview_logo_transparent_small](https://github.com/user-attachments/assets/52f49923-6ea7-47af-8c71-a7f93a315e17)
 
 The **easiest** way to **view volumetric images** in **Python** 👩‍💻 **Install** it via `pip install niftiview`! 
 
