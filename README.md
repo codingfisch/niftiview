@@ -25,7 +25,7 @@ from niftiview import TEMPLATES, NiftiImageGrid
 niigrid = NiftiImageGrid([TEMPLATES['ch2'], TEMPLATES['T1']])
 # niigrid = NiftiImageGrid(['/path/to/your/nifti1.nii.gz', 
 #                           '/path/to/your/nifti2.nii.gz'])
-im = niigrid.get_image()
+im = niigrid.get_image(layout='sagittal++', nrows=1)
 im.show()
 ```
 ![niftigrid](https://github.com/user-attachments/assets/99e0f520-a1b0-4cbf-9b34-51a27abb84cd)
