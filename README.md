@@ -45,4 +45,10 @@ To **fully understand** how to use `niftiview`, study the **example notebooks** 
 ```bash
 niftiview-cli -i /path/to/niftis/*.nii.gz -o /path/to/output/folder --gif
 ```
-...saves **PNG**s or **GIF**s. Take a look at all its possible options via `niftiview-cli --help`!
+...saves **PNG**s or **GIF**s. To showcase its versatility, here is a compilation of GIFs created with NiftiView
+
+![niceviews](https://github.com/user-attachments/assets/e2c3648b-1a11-40e9-9230-834a66730f36)
+
+Explore all the available options by running `niftiview-cli --help`
+
+P.S. If you're interested in generating 🧠 tissue maps like the ones shown at the end of the GIF, be sure to check out [deepmriprep](https://github.com/wwu-mmll/deepmriprep)!
