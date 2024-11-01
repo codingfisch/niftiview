@@ -19,7 +19,7 @@ PADCOLORS = ('black', 'white', 'gray', 'transparent')
 
 class Config:
     def __init__(self, scaling=None, appearance_mode='dark', filepaths_view1=None, filepaths_view2=None, view=1, page=0,
-                 max_samples=4, origin=None, layout='sagittal++', height=600, squeeze=False, coord_sys='array_mm',
+                 max_samples=4, origin=None, layout='all', height=600, squeeze=False, coord_sys='array_mm',
                  glass_mode=None, annotations=False, resizing=None, cmap=None, transp_if=None, qrange=None, vrange=None,
                  equal_hist=False, is_atlas=None, alpha=.5, crosshair=False, fpath=0, coordinates=False, header=False,
                  histogram=False, cbar=False, title=None, fontsize=20, linecolor='white', linewidth=2, tmp_height=360,

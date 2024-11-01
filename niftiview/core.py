@@ -25,16 +25,14 @@ class NiftiCore:
         assert not (array is None and filepath is None and nib_image is None), \
             'Either filepath, nib_image or array must be given'
         if filepath is None and nib_image is None:
-            if affine is None:
-                affine = np.eye(4)
-                affine[:3, 3] -= np.array(array.shape) / 2
+            affine = get_dummy_affine(array.shape) if affine is None else affine
             assert isinstance(affine, np.ndarray) and affine.shape == (4, 4), 'Affine must be ndarray with shape (4, 4)'
             array = array.astype(np.float32)
             header = None
         else:
             if filepath is None:
                 filepath = nib_image.dataobj.file_like if hasattr(nib_image.dataobj, 'file_like') else None
-            array, affine, header = load_nib(filepath, nib_image)
+            array, affine, header = load_np(filepath) if filepath.endswith('.npy') else load_nib(filepath, nib_image)
         assert array.ndim in (3, 4), f'Image shape {array.shape} is not 3D or 4D'
         self.shape = array.shape
         self.sorted_array = self.sort_array(array)
@@ -198,6 +196,19 @@ def load_nib(filepath=None, nib_image=None):
     array = nib_img.get_fdata(dtype=np.float32)
     array = np.nan_to_num(array)
     return array, nib_img.affine, nib_img.header
+
+
+def load_np(filepath):
+    array = np.load(filepath)
+    affine = get_dummy_affine(array.shape)
+    header = None
+    return array, affine, header
+
+
+def get_dummy_affine(shape):
+    affine = np.eye(4)
+    affine[:3, 3] -= np.array(shape[:3]) / 2
+    return affine
 
 
 def get_aspect_ratios(affine, shape):
