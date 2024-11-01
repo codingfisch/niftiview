@@ -51,4 +51,4 @@ niftiview-cli -i /path/to/niftis/*.nii.gz -o /path/to/output/folder --gif
 
 Explore all the available options by running `niftiview-cli --help`
 
-P.S. If you're interested in generating 🧠 tissue maps like the ones shown at the end of the GIF, check out [deepmriprep](https://github.com/wwu-mmll/deepmriprep)!
+P.S. If you're interested in creating 🧠 tissue maps like the ones shown at the end of the GIF, check out [deepmriprep](https://github.com/wwu-mmll/deepmriprep)!
