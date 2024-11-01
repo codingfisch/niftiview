@@ -25,7 +25,7 @@ from niftiview import TEMPLATES, NiftiImageGrid
 niigrid = NiftiImageGrid([TEMPLATES['ch2'], TEMPLATES['T1']])
 # niigrid = NiftiImageGrid(['/path/to/your/nifti1.nii.gz', 
 #                           '/path/to/your/nifti2.nii.gz'])
-im = niigrid.get_image()
+im = niigrid.get_image(layout='sagittal++', nrows=1)
 im.show()
 ```
 ![niftigrid](https://github.com/user-attachments/assets/99e0f520-a1b0-4cbf-9b34-51a27abb84cd)
@@ -45,4 +45,10 @@ To **fully understand** how to use `niftiview`, study the **example notebooks** 
 ```bash
 niftiview-cli -i /path/to/niftis/*.nii.gz -o /path/to/output/folder --gif
 ```
-...saves **PNG**s or **GIF**s. Take a look at all its possible options via `niftiview-cli --help`!
+...saves **PNG**s or **GIF**s. To showcase its versatility, here is a compilation of created GIFs
+
+![niceviews](https://github.com/user-attachments/assets/e2c3648b-1a11-40e9-9230-834a66730f36)
+
+Explore all the available options by running `niftiview-cli --help`
+
+P.S. If you're interested in creating 🧠 tissue maps like the ones shown at the end of the GIF, check out [deepmriprep](https://github.com/wwu-mmll/deepmriprep)!
