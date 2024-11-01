@@ -45,7 +45,7 @@ To **fully understand** how to use `niftiview`, study the **example notebooks** 
 ```bash
 niftiview-cli -i /path/to/niftis/*.nii.gz -o /path/to/output/folder --gif
 ```
-...saves **PNG**s or **GIF**s. To showcase its versatility, here is a compilation of GIFs created with NiftiView
+...saves **PNG**s or **GIF**s. To showcase its versatility, here is a compilation of created GIFs
 
 ![niceviews](https://github.com/user-attachments/assets/e2c3648b-1a11-40e9-9230-834a66730f36)
 
