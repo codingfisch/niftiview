@@ -55,7 +55,7 @@ class NiftiImage:
             self.image = self.image.resize(size=self.nics[0].image_size, resample=0)
         im = self.image.copy()
         if crosshair or fpath or coordinates or header or histogram or cbar or title is not None:
-            self.overlay = Overlay(self.nics[0], self.cmaps[-1], self.cmaps[-1].vrange[0], self.cmaps[-1].vrange[-1])
+            self.overlay = Overlay(self.nics, self.cmaps[-1], self.cmaps[-1].vrange[0], self.cmaps[-1].vrange[-1])
             im = self.overlay.draw(im, crosshair, fpath, coordinates, header, histogram, cbar, title,
                                    fontsize, linecolor, linewidth, **cbar_kwargs)
         return to_numpy(im) if as_array else im
@@ -67,8 +67,7 @@ class NiftiImage:
             resize_mode = i == 0 if resizing is None else resizing if isinstance(resizing, int) else resizing[i]
             im = nic.get_image(origin, layout, height, aspect_ratios, coord_sys, resize_mode, glass_mode)
             colormap = self.get_cmap(nic, i, cmap, transp_if, qrange, vrange, equal_hist, is_atlas, force_rgba)
-            im = colormap(im)
-            layers.append(Image.fromarray(im))
+            layers.append(colormap(im, asarray=False))
             self.cmaps.append(colormap)
         if glass_mode is not None:
             layers[0] = self.glassbrain.get_image(self.nics[0], linewidth=linewidth)
@@ -106,9 +105,9 @@ class NiftiImage:
 
 class TransparentColormap:
     def __init__(self, cmap='gray', vrange=None, is_atlas=False, transp_if=None, equal_hist=False, force_rgba=False,
-                 n=256, gamma=1.):
+                 gamma=1.):
         colormap = Colormap(cmap)
-        lut = colormap.lut(N=n, gamma=gamma)
+        lut = colormap.lut(gamma=gamma)
         self.name = colormap.name
         self.is_atlas = is_atlas
         self.transp_if = transp_if
@@ -117,23 +116,28 @@ class TransparentColormap:
         self.equal_hist = equal_hist
         self.force_rgba = force_rgba or transp_if is not None
 
-    def __call__(self, x):
+    def __call__(self, x, asarray=True):
         if self.transp_if is not None:
             op, v = self.transp_if[0], float(self.transp_if[1:])
             mask = np.abs(x) < v if op == '|' else x < v if op == '<' else x == v
+            mask = Image.fromarray(255 * (~mask).astype(np.uint8))
         x = normalize(x, self.vrange, self.equal_hist)#, clip=False)
-        if self.name == 'matlab:gray' and not self.force_rgba:
+        if not self.force_rgba and self.name in ['matlab:gray', 'matplotlib:binary']:
             x = (255 * x).astype(np.uint8)
+            x = x if self.lut[0, 0] == 0 else 255 - x
+            x = Image.fromarray(x)
         else:
-            x = (x * len(self.lut)).astype(np.int16)
-            x = self.lut.take(x, axis=0, mode='clip')
-            if self.transp_if is not None:
-                x[mask] = [0, 0, 0, 0]
-        return x
+            x *= len(self.lut) - 1
+            x = Image.fromarray(x.astype(np.uint8))
+            x.putpalette(self.lut, rawmode='RGBA')
+            x = x.convert('RGBA')
+        if self.transp_if is not None:
+            x.putalpha(mask)
+        return to_numpy(x) if asarray else x
 
 
 def get_nifti_cores(filepaths=None, nib_images=None, arrays=None, affines=None):
-    assert [filepaths, nib_images, arrays] != 3 * [None], 'Either filepaths, nib_images or arrays must be given'
+    assert not (filepaths is None and nib_images is None and arrays is None), 'Either filepaths, nib_images or arrays must be given'
     filepaths = [filepaths] if isinstance(filepaths, str) else filepaths
     nib_images = [nib_images] if isinstance(nib_images, FileBasedImage) else nib_images
     arrays = [arrays] if isinstance(arrays, np.ndarray) else arrays

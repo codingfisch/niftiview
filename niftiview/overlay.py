@@ -11,8 +11,8 @@ FONT_DEFAULT = 'DejaVuSans'
 
 
 class Overlay:
-    def __init__(self, nic, cmap=None, vmin=0, vmax=1, font=None):
-        self.nic = nic
+    def __init__(self, nics, cmap=None, vmin=0, vmax=1, font=None):
+        self.nics = nics
         self.cbar = CBar(CMap(cmap) if isinstance(cmap, str) else cmap, vmin, vmax)  # use CBar(cmap, vmin, vmax) for CBar with transparency?
         self.font = font or FONT_DEFAULT
         self._lines = []
@@ -65,47 +65,47 @@ class Overlay:
         self._texts += self.get_header_text(margin, fpath > 0, fontsize) if header else []
         self._texts += self.get_title_text(title, margin, im_size[0], int(1.5 * fontsize)) if title is not None else []
         if histogram:
-            texts, lines = self.get_histogram(margin, int(fpath > 0) + 4 * header, fontsize, linewidth)
+            texts, lines = self.get_histogram(margin, int(fpath > 0) + 4 * header, fontsize)
             self._texts += texts
             self._lines += lines
         if crosshair:
-            multiline = len(set(self.nic.image_planes)) != len(self.nic.image_planes)
+            multiline = len(set(self.nics[0].image_planes)) != len(self.nics[0].image_planes)
             self._lines += self.get_multi_lines(linewidth) if multiline else self.get_cross_lines(linewidth)
 
     def get_title_text(self, text, margin, width, fontsize, anchor='ma'):
         return [{'xy': (width // 2, margin), 'text': text, 'fontsize': fontsize, 'anchor': anchor}]
 
     def get_filepath_texts(self, fpath, margin, fontsize):
-        filepath = '' if self.nic.filepath is None else self.nic.filepath
+        filepath = '' if self.nics[-1].filepath is None else self.nics[-1].filepath
         text = filepath if isinstance(fpath, bool) or filepath == '' else '/'.join(Path(filepath[1:]).parts[-fpath:])
         return [{'xy': (margin, margin), 'text': text, 'fontsize': fontsize}]
 
     def get_coordinates_texts(self, margin, fontsize, anchor='ld'):
         texts = []
-        for kw in self.nic._image_props:
+        for kw in self.nics[0]._image_props:
             xy = [kw['box'][0] + margin, kw['box'][1] + kw['size'][1] - margin]
-            origin = self.nic.affine @ np.append(kw['idx'][:3], 1)
+            origin = self.nics[0].affine @ np.append(kw['idx'][:3], 1)
             dim = PLANES.index(kw['plane'])
             texts.append({'xy': xy, 'text': f'{"xyz"[dim]} = {int(origin[dim])}', 'fontsize': fontsize, 'anchor': anchor})
         return texts
 
     def get_header_text(self, margin, row, fontsize):
         x = row * fontsize
-        shape_str = ' x '.join([str(s) for s in self.nic.shape])
-        text = [{'xy': (margin, margin + x), 'text': f'Array: {shape_str} x {self.nic.dtype}', 'fontsize': fontsize}]#, 'anchor': anchor}]
+        shape_str = ' x '.join([str(s) for s in self.nics[-1].shape])
+        text = [{'xy': (margin, margin + x), 'text': f'Array: {shape_str} x {self.nics[-1].dtype}', 'fontsize': fontsize}]#, 'anchor': anchor}]
         for i in range(3):
             text_row = 'Affine: (' if i == 0 else '('
             text_cols = []
-            for i_col, v in enumerate(self.nic.affine[i]):
+            for i_col, v in enumerate(self.nics[-1].affine[i]):
                 text_cols.append(f'{v:.2f}' if i_col < 3 else f'{v:.4f}'[:6])
             text_row += ', '.join(text_cols) + ')'
             text.append({'xy': (4 * fontsize if i > 0 else margin, margin + x + (i + 1) * fontsize), 'text': text_row,
                          'fontsize': fontsize})
         return text
 
-    def get_histogram(self, margin, row, fontsize, linewidth, colon_text='Histogram: ', step=4):
+    def get_histogram(self, margin, row, fontsize, colon_text='Histogram: ', step=4):
         y = fontsize * row
-        percentiles = self.nic.quantile(np.linspace(0, 1, 10001))
+        percentiles = self.nics[-1].quantile(np.linspace(0, 1, 10001))
         min_text, max_text = f'{percentiles[0]:.5g}', f'{percentiles[-1]:.5g}'
         max_x = fontsize * 15
         texts = [{'xy': [margin, y + margin], 'text': colon_text, 'fontsize': fontsize},
@@ -127,9 +127,9 @@ class Overlay:
 
     def get_cross_lines(self, width):
         lines = []
-        for kw in self.nic._image_props:
+        for kw in self.nics[0]._image_props:
             dims = [dim for dim, p in enumerate(PLANES) if p != kw['plane']]
-            rel_pos = (np.array(kw['idx'])[:3] / self.nic.shape[:3])[dims]
+            rel_pos = (np.array(kw['idx'])[:3] / self.nics[0].shape[:3])[dims]
             box, size = kw['box'], kw['size']
             abs_pos = (int(round(rel_pos[0] * size[0])), int(round((1 - rel_pos[1]) * size[1])))
             lines.append({'xy': (box[0] + abs_pos[0], box[1], box[0] + abs_pos[0], box[1] + size[1]), 'width': width})
@@ -137,16 +137,16 @@ class Overlay:
         return lines
 
     def get_multi_lines(self, linewidth):
-        planes = self.nic.image_planes
-        idxs = self.nic.image_indices
+        planes = self.nics[0].image_planes
+        idxs = self.nics[0].image_indices
         lines = []
         if planes[0] != planes[-1]:
             vertical = planes[0][0] != planes[-1][0] in ['sc', 'sa', 'cs']
-            box = self.nic.image_boxes[-1]
-            size = self.nic.image_sizes[-1]
+            box = self.nics[0].image_boxes[-1]
+            size = self.nics[0].image_sizes[-1]
             for plane, idxs in zip(planes[:-1], idxs[:-1]):
                 dim = PLANES.index(plane)
-                rel_pos = idxs[dim] / self.nic.shape[dim]
+                rel_pos = idxs[dim] / self.nics[0].shape[dim]
                 abs_pos = rel_pos * size[0] if vertical else (1 - rel_pos) * size[1]
                 if vertical:
                     line = (box[0] + abs_pos, box[1], box[0] + abs_pos, box[1] + size[1])

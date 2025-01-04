@@ -161,11 +161,13 @@ class Config:
         save_dict = {k: None if k in SAVE_RESET_ATTRIBUTES else v for k, v in save_dict.items()}
         save_json(save_dict, filepath)
 
-    def to_dict(self, grid_kwargs_only=False):
+    def to_dict(self, grid_kwargs_only=False, hd=True):
         config_dict = {}
         for k in vars(self):
             if not k.startswith('_') and (not grid_kwargs_only or k in GRID_ATTRIBUTES):
                 config_dict.update({k: getattr(self, k)})
+        if hd:
+            config_dict.update({'tmp_height': None})
         return config_dict
 
     @classmethod

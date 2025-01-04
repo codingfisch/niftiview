@@ -11,7 +11,7 @@ from .overlay import from_pil, get_pad_box, draw_background, get_surface_class
 
 class NiftiImageGrid:
     def __init__(self, filepaths=None, nib_images=None, arrays=None, affines=None):
-        assert [filepaths, nib_images, arrays] != 3 * [None], 'Either filepaths, nib_images or arrays must be given'
+        assert not (filepaths is None and nib_images is None and arrays is None), 'Either filepaths, nib_images or arrays must be given'
         filepaths = [filepaths] if isinstance(filepaths, str) else filepaths
         n = len(filepaths if filepaths is not None else nib_images if nib_images is not None else arrays)
         filepaths = [None] * n if filepaths is None else filepaths
@@ -31,12 +31,12 @@ class NiftiImageGrid:
                    resizing=None, glass_mode=None, cmap=None, transp_if=None, qrange=None, vrange=None,
                    equal_hist=False, is_atlas=False, alpha=.5, crosshair=False, fpath=False, coordinates=False,
                    header=False, histogram=False, cbar=False, title=None, fontsize=20, linecolor='w', linewidth=2,
-                   nrows=None, **cbar_kwargs):
+                   tmp_height=None, nrows=None, **cbar_kwargs):
         for i in range(len(self.niis)):
             self.niis[i].overlay = None
         im = self.get_image(origin, layout, height, squeeze, coord_sys, resizing, glass_mode, cmap, transp_if, qrange,
                             vrange, equal_hist, is_atlas, alpha, crosshair, fpath, coordinates, header, histogram,
-                            cbar, title, fontsize, linecolor, linewidth, nrows, **cbar_kwargs)
+                            cbar, title, fontsize, linecolor, linewidth, tmp_height, nrows, **cbar_kwargs)
         SurfaceClass = get_surface_class(filepath.split('.')[-1])
         with SurfaceClass(filepath, im.size[0], im.size[1]) as surface:
             ctx = Context(surface)
@@ -61,6 +61,8 @@ class NiftiImageGrid:
         title_list = title if isinstance(title, list) else len(self) * [title]
         self.shape = optimal_shape(len(self), layout) if nrows is None else (nrows, int(np.ceil(len(self) / nrows)))
         self.patches = []
+        # if tmp_height is None:
+        #     print(height)
         nii_tmp_height = None if tmp_height is None else tmp_height // self.shape[0]
         for nii, org, ttl in zip(self.niis, origin, title_list):
             im = nii.get_image(org, layout, height // self.shape[0], aspect_ratios, coord_sys, resizing, glass_mode,

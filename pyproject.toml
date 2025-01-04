@@ -11,7 +11,6 @@ classifiers = [
     'Operating System :: OS Independent',
     'Intended Audience :: Science/Research'
 ]
-include = ['data/*']
 
 [tool.poetry.dependencies]
 python = '^3.9'
@@ -20,7 +19,7 @@ pillow = '*'
 cmap = '*'
 tqdm = '*'
 affine-image = '*'
-colorbar = '>=0.1.5'
+colorbar = '>=0.2.0'
 
 [tool.poetry.dev-dependencies]
 matplotlib = '*'

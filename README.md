@@ -1,4 +1,4 @@
-![niftiview_logo_transparent_small](https://github.com/user-attachments/assets/52f49923-6ea7-47af-8c71-a7f93a315e17)
+![niftiview_logo_transparent_small](https://repository-images.githubusercontent.com/875620357/02caf846-cb7c-402d-a598-39f6ea64745e)
 
 The **easiest** way to **view volumetric images** in **Python** 👩‍💻 **Install** it via `pip install niftiview`! 
 
@@ -35,10 +35,11 @@ Behind the scenes, `niftiview` uses **three main classes** that build on each ot
 - `NiftiImage`: ...applies a colormap to the array, converts it to a `PIL.Image` and adds overlays...
 - `NiftiImageGrid`: ...puts the images in a grid
 
-To **fully understand** how to use `niftiview`, study the **example notebooks** 🧑‍🏫
-- [`examples/0_core.ipynb`](https://github.com/codingfisch/niftiview/blob/main/examples/0_core.ipynb) explaining `NiftiCore`
-- [`examples/1_image.ipynb`](https://github.com/codingfisch/niftiview/blob/main/examples/1_image.ipynb)  explaining `NiftiImage`
-- [`examples/2_grid.ipynb`](https://github.com/codingfisch/niftiview/blob/main/examples/2_grid.ipynb)  explaining `NiftiImageGrid`
+Study the [**examples**](https://github.com/codingfisch/niftiview/tree/main/examples) 🧑‍🏫 to **fully understand** `niftiview` and create a figure like this
+
+
+
+save it as a high-quality PDF or SVG e.g. for scientific publication 👨‍🔬
 
 ## `niftiview-cli` 🖥️
 `pip install niftiview` also installs the **command line utility** that given filepath(s) or a filepattern...
