@@ -114,7 +114,7 @@ class NiftiCore:
             dim = PLANES.index(props['plane'])
             plane_org = org.copy()
             plane_org[dim] = int(substr[2:-1]) if '[' in substr else plane_org[dim]
-            props.update({'idx': self.get_array_index(plane_org, coord_sys)})
+            props.update({'idx': get_array_index(plane_org, self.affine, self.array.shape, coord_sys)})
             three_planes_substr = (['s', '|'] + layout_substrings + ['s', '|'])[2*i:2*i+5]
             size = self.get_plane_size(height, aspect_ratios, props['plane'], three_planes_substr)
             props.update({'size': size})
@@ -132,21 +132,6 @@ class NiftiCore:
             return self.array[tuple(slice_)]
         else:
             return self.glass_arrays[glass_mode][plane]
-
-    def get_array_index(self, origin, coord_sys=None):
-        coord_sys = coord_sys or COORDINATE_SYSTEMS[0]
-        assert coord_sys in COORDINATE_SYSTEMS, f'origin_unit must be in {COORDINATE_SYSTEMS}'
-        org = origin[:3].astype(float)
-        inv_affine = np.linalg.inv(self.affine)
-        if coord_sys == 'scanner_mm':
-            org = (inv_affine @ np.append(org, 1))[:3]
-        else:
-            if coord_sys == 'array_mm':
-                org = org / self.affine[:3, :3].sum(axis=1)
-            org += inv_affine[:3, 3]
-        org = np.concatenate([org, origin[3:]])
-        org = org.clip(min=0, max=np.array(self.array.shape) - 1)
-        return tuple(np.round(org).astype(int))
 
     def get_origin_bounds(self, coord_sys=None):
         coord_sys = coord_sys or COORDINATE_SYSTEMS[0]
@@ -220,3 +205,19 @@ def resample_3d(x, affine0, affine1, shape, nearest=True):
     affine = np.linalg.inv(affine0) @ affine1
     x_resampled = affine_transform_3d(x.transpose(3, 0, 1, 2)[None], affine[None], shape, nearest, scipy_affine=True)
     return x_resampled[0].transpose(1, 2, 3, 0)
+
+
+def get_array_index(origin, affine, shape, coord_sys=None):
+    coord_sys = coord_sys or COORDINATE_SYSTEMS[0]
+    assert coord_sys in COORDINATE_SYSTEMS, f'origin_unit must be in {COORDINATE_SYSTEMS}'
+    org = origin[:3].astype(float)
+    inv_affine = np.linalg.inv(affine)
+    if coord_sys == 'scanner_mm':
+        org = (inv_affine @ np.append(org, 1))[:3]
+    else:
+        if coord_sys == 'array_mm':
+            org = org / affine[:3, :3].sum(axis=1)
+        org += inv_affine[:3, 3]
+    org = np.concatenate([org, origin[3:]])
+    org = org.clip(min=0, max=np.array(shape) - 1)
+    return tuple(np.round(org).astype(int))
