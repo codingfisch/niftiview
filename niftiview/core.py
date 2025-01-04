@@ -35,7 +35,7 @@ class NiftiCore:
             array, affine, header = load_np(filepath) if filepath.endswith('.npy') else load_nib(filepath, nib_image)
         assert array.ndim in (3, 4), f'Image shape {array.shape} is not 3D or 4D'
         self.shape = array.shape
-        self.sorted_array = self.sort_array(array)
+        self.sorted_array = None
         self.array = array[..., None] if array.ndim == 3 else array
         self.affine = affine
         self.filepath = filepath
@@ -86,10 +86,14 @@ class NiftiCore:
         self._image_props = self.get_image_properties(origin, layout, height, aspect_ratios, coord_sys)
 
     def quantile(self, q):
+        if self.sorted_array is None:
+            self.sorted_array = self.sort_array(self.array)
         idxs = (np.array(q) * len(self.sorted_array)).astype(np.int64)
         return self.sorted_array[idxs.clip(min=0, max=len(self.sorted_array) - 1)]
 
     def quantile_of_value(self, v):
+        if self.sorted_array is None:
+            self.sorted_array = self.sort_array(self.array)
         return (v > self.sorted_array).mean()
 
     def get_image(self, origin=None, layout='all', height=400, aspect_ratios=None, coord_sys=None, resizing=1, glass_mode=None):
