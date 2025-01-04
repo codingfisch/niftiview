@@ -37,7 +37,7 @@ Behind the scenes, `niftiview` uses **three main classes** that build on each ot
 
 Study the [**examples**](https://github.com/codingfisch/niftiview/tree/main/examples) 🧑‍🏫 to **fully understand** `niftiview` and create a figure like this
 
-
+![sci_gray](https://github.com/user-attachments/assets/f49bec26-3dcb-43e2-b2e7-a9862006b956)
 
 save it as a high-quality PDF or SVG e.g. for scientific publication 👨‍🔬
 
