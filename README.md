@@ -35,11 +35,11 @@ Behind the scenes, `niftiview` uses **three main classes** that build on each ot
 - `NiftiImage`: ...applies a colormap to the array, converts it to a `PIL.Image` and adds overlays...
 - `NiftiImageGrid`: ...puts the images in a grid
 
-Study the [**examples**](https://github.com/codingfisch/niftiview/tree/main/examples) 🧑‍🏫 to **fully understand** `niftiview` and create a figure like this
+Study the [**examples**](https://github.com/codingfisch/niftiview/tree/main/examples) 🧑‍🏫 to **fully understand** `niftiview` and create an image like this
 
 ![sci_gray](https://github.com/user-attachments/assets/f49bec26-3dcb-43e2-b2e7-a9862006b956)
 
-save it as a high-quality PDF or SVG e.g. for scientific publication 👨‍🔬
+as a vector graphic─PDF, SVG, EPS or PS format─to preserve high image quality (e.g. for scientific publication 👨‍🔬)
 
 ## `niftiview-cli` 🖥️
 `pip install niftiview` also installs the **command line utility** that given filepath(s) or a filepattern...
