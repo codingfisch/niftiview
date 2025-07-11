@@ -15,7 +15,7 @@ TEMPLATE_NIB_IMAGES = {template: nib.load(TEMPLATES[template]) for template in [
 IMAGE_KWARGS = [{'layout': 's|c/a'}, {'layout': 'a[10]|a[20]|s', 'crosshair': True}, {'aspect_ratios': 1},
                 {'coord_sys': 'array_idx'}, {'coord_sys': 'array_mm'}, {'coord_sys': 'scanner_mm'}, {'resizing': 5},
                 {'glass_mode': 'max'}, {'transp_if': '<.1'}, {'qrange': (.2, .8)}, {'vrange': (20, 80)},
-                {'equal_hist': True}, {'alpha': .8}, {'is_atlas': True}, {'crosshair': True}, {'fpath': True},
+                {'equal_hist': True}, {'alpha': .8}, {'is_atlas': True}, {'crosshair': True}, {'fpath': 1},
                 {'coordinates': True}, {'title': 'Title'}, {'header': True}, {'histogram': True}, {'header': True},
                 {'histogram': True}, {'cbar': True}, {'tmp_height': 30}, {'cbar': True, 'cbar_pad': 20, 'cbar_x': .1},
                 {'cbar': True, 'fontsize': 10, 'linecolor': 'gray', 'linewidth': 9}]
