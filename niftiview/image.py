@@ -29,11 +29,12 @@ class NiftiImage:
                    resizing=None, glass_mode=None, cmap=None, transp_if=None, qrange=None, vrange=None,
                    equal_hist=False, is_atlas=False, alpha=.5, crosshair=False, fpath=False, coordinates=False,
                    header=False, histogram=False, cbar=False, title=None, fontsize=20, linecolor='w', linewidth=2,
-                   **cbar_kwargs):
+                   extra_lines=None, extra_texts=None, **cbar_kwargs):
         self.overlay = None
         im = self.get_image(origin, layout, height, aspect_ratios, coord_sys, resizing, glass_mode,
                             cmap, transp_if, qrange, vrange, equal_hist, is_atlas, alpha)
-        overlay = Overlay(self.nics[-1:], self.cmaps[-1], self.cmaps[-1].vrange[0], self.cmaps[-1].vrange[-1])
+        overlay = Overlay(self.nics[-1:], self.cmaps[-1], self.cmaps[-1].vrange[0], self.cmaps[-1].vrange[-1],
+                          extra_lines=extra_lines, extra_texts=extra_texts)
         overlay.save(filepath, im, crosshair, fpath, coordinates, header, histogram,
                      cbar, title, fontsize, linecolor, linewidth, **cbar_kwargs)
 

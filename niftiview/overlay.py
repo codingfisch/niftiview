@@ -11,10 +11,12 @@ FONT_DEFAULT = 'DejaVuSans'
 
 
 class Overlay:
-    def __init__(self, nics, cmap=None, vmin=0, vmax=1, font=None):
+    def __init__(self, nics, cmap=None, vmin=0, vmax=1, font=None, extra_lines=None, extra_texts=None):
         self.nics = nics
         self.cbar = CBar(CMap(cmap) if isinstance(cmap, str) else cmap, vmin, vmax)  # use CBar(cmap, vmin, vmax) for CBar with transparency?
         self.font = font or FONT_DEFAULT
+        self.extra_lines = [] if extra_lines is None else extra_lines
+        self.extra_texts = [] if extra_texts is None else extra_texts
         self._lines = []
         self._texts = []
 
@@ -71,6 +73,8 @@ class Overlay:
         if crosshair:
             multiline = len(set(self.nics[0].image_planes)) != len(self.nics[0].image_planes)
             self._lines += self.get_multi_lines(linewidth) if multiline else self.get_cross_lines(linewidth)
+        self._lines += self.extra_lines
+        self._texts += self.extra_texts
 
     def get_title_text(self, text, margin, width, fontsize, anchor='ma'):
         return [{'xy': (width // 2, margin), 'text': text, 'fontsize': fontsize, 'anchor': anchor}]
