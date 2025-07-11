@@ -3,7 +3,7 @@
 The **easiest** way to **view volumetric images** in **Python** 👩‍💻 **Install** it via `pip install niftiview`! 
 
 `niftiview` stands behind
-- [NiftiView](https://github.com/codingfisch/niftiview_app), the viewer **app** with the cutest desktop icon 🧠 Download it [here](https://github.com/codingfisch/niftiview_app)!
+- [NiftiView](https://github.com/codingfisch/niftiview_app), the viewer **app** with the cutest desktop icon 🧠 Download it [here](https://github.com/codingfisch/niftiview-app)!
 - [NiftiWidget](https://github.com/codingfisch/niftiwidget), a **widget** for interactive viewing in [Jupyter](https://jupyter.org/) 👩‍💻🧠 Install it via `pip install niftiwidget`! 
 
 ## Usage 💡
