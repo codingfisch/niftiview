@@ -33,7 +33,7 @@ class NiftiImage:
         self.overlay = None
         im = self.get_image(origin, layout, height, aspect_ratios, coord_sys, resizing, glass_mode,
                             cmap, transp_if, qrange, vrange, equal_hist, is_atlas, alpha)
-        overlay = Overlay(self.nics[-1], self.cmaps[-1], self.cmaps[-1].vrange[0], self.cmaps[-1].vrange[-1])
+        overlay = Overlay(self.nics[-1:], self.cmaps[-1], self.cmaps[-1].vrange[0], self.cmaps[-1].vrange[-1])
         overlay.save(filepath, im, crosshair, fpath, coordinates, header, histogram,
                      cbar, title, fontsize, linecolor, linewidth, **cbar_kwargs)
 
