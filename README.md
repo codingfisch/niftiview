@@ -1,6 +1,10 @@
 ![niftiview_logo_transparent_small](https://repository-images.githubusercontent.com/875620357/02caf846-cb7c-402d-a598-39f6ea64745e)
 
-The **easiest** way to **view volumetric images** in **Python** 👩‍💻 **Install** it via `pip install niftiview`! 
+The **easiest** way to **view volumetric images** in **Python** 👩‍💻 **Install** it via `pip install niftiview`!
+ 
+If `pip install niftiview` results in an error, try fixing it via
+- `apt install libcairo2-dev pkg-config python3-dev` (on Linux)
+- `brew install cairo pkg-config tcl-tk python-tk` (on macOS)
 
 `niftiview` stands behind
 - [NiftiView](https://github.com/codingfisch/niftiview-app), the viewer **app** with the cutest desktop icon 🧠 Download it [here](https://github.com/codingfisch/niftiview-app/releases/)!
