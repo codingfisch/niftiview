@@ -91,7 +91,7 @@ def main():
     parser.add_argument('--header', help='Show header', action=bool_opt, default=False)
     parser.add_argument('--histogram', help='Show histogram', action=bool_opt, default=False)
     parser.add_argument('--cbar', help='Show colorbar', action=bool_opt, default=False)
-    parser.add_argument('--title', help='Show title', type=str, default=None)
+    parser.add_argument('--title', help='Show title', type=str, nargs='+', default=None)
     parser.add_argument('--fontsize', help='Font size', type=int, default=20)
     parser.add_argument('--linecolor', help='Line color', type=str, default='white')
     parser.add_argument('--linewidth', help='Line width', type=int, default=2)
@@ -107,10 +107,13 @@ def main():
     parser.add_argument('--cbar_ticks', help='Colorbar ticks', type=float, nargs='+', default=None)
     args = parser.parse_args()
 
-    in_fpaths, out_dir = args.input, args.output
+    in_fpaths, out_dir, title = args.input, args.output, args.title
     delattr(args, 'input')
     delattr(args, 'output')
-    save_images_or_gifs(in_filepaths=in_fpaths, out_dir=out_dir, **vars(args))
+    delattr(args, 'title')
+    print(args)
+    title = title[0] if len(title) else title
+    save_images_or_gifs(in_filepaths=in_fpaths, out_dir=out_dir, title=title, **vars(args))
 
 
 if __name__ == '__main__':
